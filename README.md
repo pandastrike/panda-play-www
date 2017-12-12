@@ -21,6 +21,30 @@ class Greeting extends Gadget
 
 ```
 
+Or you can use a more concise functional style:
+
+```javascript
+import {gadget} from "panda-play"
+
+gadget({
+
+  name: "x-editor",
+
+  observe: {
+    value: "Hello"
+  },
+
+  template: ({value}) => `<h1>${value}, World!</h1>`,
+
+
+  events: {
+    h1: {
+      click: ({target}) => target.gadget.value = "Goodbye"
+    }
+  }
+})
+```
+
 ## Features
 
 - Fully encapsulated native Web Components
