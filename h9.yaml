@@ -1,5 +1,5 @@
 source: "www"
-target: "build"
+target: "build/www"
 server:
   port: 8088
 
@@ -12,7 +12,7 @@ aws:
     index: index
     error: 404
 
-  cors: default
+  cors: wildstyle
 
   environments:
 

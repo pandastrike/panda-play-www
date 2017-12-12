@@ -26,7 +26,7 @@ gulp.task "www:js", ->
       resolve:
         modules: [
           # path.resolve "lib"
-          "node_modules"
+          path.resolve "node_modules"
         ]
         extensions: [ ".js", ".json", ".coffee" ]
       (error, result) ->

@@ -1,14 +1,15 @@
-import {Gadget} from "panda-play"
+import {gadget} from "panda-play"
 import {template} from "./template.coffee"
 import MarkdownParser from "markdown-it"
 
-class Markdown extends Gadget
+gadget
 
-  @register "x-markdown"
+  name: "x-markdown"
 
-  @observe value: ""
+  observe:
+    value: ""
 
-  @properties
+  properties:
     output:
       get: do ->
         md = new MarkdownParser

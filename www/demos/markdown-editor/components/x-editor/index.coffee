@@ -1,13 +1,14 @@
-import {Gadget} from "panda-play"
+import {gadget} from "panda-play"
 import {template} from "./template.coffee"
 
-class Editor extends Gadget
+gadget
 
-  @register "x-editor"
+  name: "x-editor"
 
-  @observe value: ""
+  observe:
+    value: ""
 
-  @events
+  events:
     textarea:
       keyup: ({target}) -> @value = target.value
 

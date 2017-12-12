@@ -35,7 +35,7 @@ class Greeting extends Gadget
 
 ## Demo
 
-[Try it out!](https://play.pandastrike.com/v/1.0.0-alpha-00/demos/markdown-editor)
+[Try it out!](https://play.pandastrike.com/demos/markdown-editor)
 
 ## Install
 
