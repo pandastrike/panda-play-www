@@ -1,0 +1,38 @@
+source: "www"
+target: "build"
+server:
+  port: 8088
+
+aws:
+
+  domain: pandastrike.com
+  region: us-west-1
+
+  site:
+    index: index
+    error: 404
+
+  cors: default
+
+  environments:
+
+    production:
+      hostnames:
+        - play
+      cache:
+        expires: 1800 # 30 minutes
+        ssl: true
+        priceClass: 100
+
+    staging:
+      hostnames:
+        - staging-play
+
+    feature:
+      hostnames:
+        - feature-play
+
+# blog:
+#   page:
+#     size: 10
+#     template: "_layouts/blog-summary.jade"
