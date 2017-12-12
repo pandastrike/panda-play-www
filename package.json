@@ -20,5 +20,8 @@
     "raw-loader": "^0.5.1",
     "stylus-loader": "^3.0.1",
     "webpack": "^3.10.0"
+  },
+  "devDependencies": {
+    "haiku9": "^2.0.5"
   }
 }
