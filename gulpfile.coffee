@@ -70,7 +70,8 @@ gulp.task "www:build",
     gulp.parallel "www:html", "www:css", "www:js", "www:images"
 
 gulp.task "www:watch", ->
-  gulp.watch [ "www/**/*", "lib/**/*", "./*" ], gulp.task "www:build"
+  gulp.watch [ "www/**/*", "lib/**/*", "./*", "../panda-play/build/lib/**/*" ],
+    gulp.task "www:build"
 
 gulp.task "default",
   gulp.series "www:build",

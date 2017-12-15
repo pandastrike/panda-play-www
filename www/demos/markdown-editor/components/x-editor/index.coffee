@@ -1,15 +1,11 @@
-import {gadget} from "panda-play"
+import {gadget, zen} from "panda-play"
 import {template} from "./template.coffee"
 
 gadget
+  tag: "x-editor"
+  mixins: zen
+  template: template
 
-  name: "x-editor"
-
-  observe:
-    value: ""
-
-  events:
+  on:
     textarea:
       keyup: ({target}) -> @value = target.value
-
-  template: template

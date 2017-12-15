@@ -1,15 +1,14 @@
 import "./components/x-tabs/index.coffee"
 import "./components/x-editor/index.coffee"
 import "./components/x-markdown/index.coffee"
+import {$} from "./helpers"
 
-import {Gadget} from "panda-play"
+$.ready ->
 
-Gadget.ready ->
+  editor = ($ "x-editor").gadget
+  markdown = ($ "x-markdown").gadget
 
-  editor = await Gadget.select "x-editor"
-  markdown = await Gadget.select "x-markdown"
-
-  Gadget.pipe editor, markdown
+  editor.pipe markdown
 
   editor.value = """
     # Chapter 1

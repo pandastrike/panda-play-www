@@ -1,13 +1,11 @@
-import {gadget} from "panda-play"
+import {gadget, zen, property} from "panda-play"
 import {template} from "./template.coffee"
 import MarkdownParser from "markdown-it"
 
 gadget
-
-  name: "x-markdown"
-
-  observe:
-    value: ""
+  tag: "x-markdown"
+  mixins: zen
+  template: template
 
   properties:
     output:
@@ -17,5 +15,3 @@ gadget
           typographer: true
           quotes: '“”‘’'
         -> md.render @value if @value?
-
-  template: template
