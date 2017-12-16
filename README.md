@@ -2,47 +2,42 @@
 
 Play is a lightweight library for building Web Components.
 
-To create a component, just extend `Gadget`:
+To create a component, you can just call `gadget`:
 
 ```coffee
-import {Gadget} from "panda-play"
+import {Gadget, zen} from "panda-play"
 
 class Greeting extends Gadget
 
-  @register "x-editor"
+  @tag "x-greeting"
 
-  @observe value: "Hello"
+  @mixins zen
 
-  template: ({value}) -> "<h1>#{value}, World!</h1>"
-
-  @events
+  @on
     h1:
       click: ({target}) -> @value = "Goodbye"
 
+  template: ({value}) -> "<h1>#{value}, World!</h1>"
+
 ```
 
-Or you can use a more concise functional style:
+Or you can use a more functional style:
 
-```javascript
-import {gadget} from "panda-play"
+```coffee
+import {gadget, zen} from "panda-play"
 
-gadget({
+gadget
 
-  name: "x-editor",
+  tag: "x-greeting"
 
-  observe: {
-    value: "Hello"
-  },
+  mixins: zen
 
-  template: ({value}) => `<h1>${value}, World!</h1>`,
+  template: ({value}) -> "<h1>#{value}, World!</h1>"
 
+  on:
+    h1:
+      click: ({target}) -> @value = "Goodbye"
 
-  events: {
-    h1: {
-      click: ({target}) => target.gadget.value = "Goodbye"
-    }
-  }
-})
 ```
 
 ## Features
@@ -56,6 +51,9 @@ gadget({
 - Component-targetable CSS from client document
 - Pipe operator to wire components together
 - Delegation pattern—Gadgets are handles to DOM elements
+- Mixin-based composition avoid [fragile base class problem][elliot]
+
+[elliott]:https://medium.com/@_ericelliott/why-composition-is-immune-to-fragile-base-class-problem-8dfc6a5272aa
 
 ## Demo
 
@@ -68,5 +66,3 @@ Bundle using your favorite bundler:
 ```
 npm i -S panda-play
 ```
-
-Standalone and JavaScript module distributions coming soon.
