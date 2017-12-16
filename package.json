@@ -17,7 +17,7 @@
     "gulp-webserver": "^0.9.1",
     "jstransformer-markdown-it": "^2.0.0",
     "jstransformer-stylus": "^1.4.0",
-    "panda-play": "^1.0.4",
+    "panda-play": "^1.2.1",
     "raw-loader": "^0.5.1",
     "stylus-loader": "^3.0.1",
     "webpack": "^3.10.0"
