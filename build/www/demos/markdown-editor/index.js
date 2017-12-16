@@ -2875,6 +2875,30 @@ var Gadget;
 
 Gadget = function () {
   class Gadget {
+    static tag(tag) {
+      var self;
+      this.tag = tag;
+      self = this;
+      self.Component = class extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({
+            mode: "open"
+          });
+          this.gadget = new self(this);
+        }
+
+        connectedCallback() {
+          return this.gadget.connect();
+        }
+
+      };
+      requestAnimationFrame(function () {
+        return customElements.define(self.tag, self.Component);
+      });
+      return this.tag;
+    }
+
     static properties(description) {
       return Object(__WEBPACK_IMPORTED_MODULE_0_fairmont_helpers__["properties"])(this.prototype, description);
     }
@@ -2930,38 +2954,6 @@ Gadget = function () {
     }
 
   };
-
-  Object(__WEBPACK_IMPORTED_MODULE_0_fairmont_helpers__["properties"])(Gadget, {
-    tag: {
-      set: function (tag) {
-        var self;
-        Object(__WEBPACK_IMPORTED_MODULE_0_fairmont_helpers__["properties"])(this, {
-          tag: {
-            value: tag
-          }
-        });
-        self = this;
-        self.Component = class extends HTMLElement {
-          constructor() {
-            super();
-            this.attachShadow({
-              mode: "open"
-            });
-            this.gadget = new self(this);
-          }
-
-          connectedCallback() {
-            return this.gadget.connect();
-          }
-
-        };
-        requestAnimationFrame(function () {
-          return customElements.define(self.tag, self.Component);
-        });
-        return this.tag;
-      }
-    }
-  });
 
   Gadget.properties({
     tag: {
