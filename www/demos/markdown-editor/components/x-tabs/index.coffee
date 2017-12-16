@@ -1,11 +1,11 @@
-import {gadget, zen} from "panda-play"
-import {template} from "./template.coffee"
+import {gadget, vdom, styles, template} from "panda-play"
+import {template as t} from "./template.coffee"
 import {Tab} from "./tab"
 
 gadget
 
   tag: "x-tabs"
-  mixins: zen
+  mixins: [ vdom, styles, template ]
 
   properties:
     tabs:
@@ -22,7 +22,8 @@ gadget
           else
             tab.deselect()
 
-  template: template
+  template: t
 
   ready: ->
+    @render()
     @tabs[0].select()

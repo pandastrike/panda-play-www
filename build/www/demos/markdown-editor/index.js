@@ -671,6 +671,9 @@ exports.Method = Method;
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__vhtml__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins__ = __webpack_require__(25);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__mixins__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__mixins__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_2__mixins__["d"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_2__mixins__["e"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(64);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__helpers__["a"]; });
 
@@ -2881,36 +2884,48 @@ Gadget = function () {
     }
 
     static on(description) {
-      return this.events.push(description);
+      return (this.events != null ? this.events : this.events = []).push(description);
+    }
+
+    static ready(f) {
+      var g;
+      g = function (event) {
+        event.target.removeEventListener(event.type, g);
+        return f.call(this, event);
+      };
+      return this.on({
+        initialize: g
+      });
     }
 
     constructor(dom) {
       this.dom = dom;
     }
 
-    async connect() {
-      await this.initialize();
-      return this.ready();
+    connect() {
+      return this.initialize();
     }
 
     initialize() {
       this.initialize = function () {};
       this.on(this.constructor.events);
-      return this.dispatch('initialize');
+      return this.dispatch("initialize", {
+        local: false
+      });
     }
-
-    ready() {}
 
     on(description) {
-      return Object(__WEBPACK_IMPORTED_MODULE_1__events__["a" /* events */])(this);
+      return Object(__WEBPACK_IMPORTED_MODULE_1__events__["a" /* events */])(this, description);
     }
 
-    dispatch(name) {
+    dispatch(name, { local } = {
+      local: true
+    }) {
       return this.shadow.dispatchEvent(new Event(name, {
         bubbles: true,
         cancelable: false,
         // allow to bubble up from shadow DOM
-        composed: true
+        composed: local
       }));
     }
 
@@ -2947,8 +2962,6 @@ Gadget = function () {
       }
     }
   });
-
-  Gadget.events = [];
 
   Gadget.properties({
     tag: {
@@ -3422,11 +3435,11 @@ exports.replace = replace;
 /* unused harmony export properties */
 /* unused harmony export observe */
 /* unused harmony export composable */
-/* unused harmony export vdom */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return vdom; });
 /* unused harmony export autorender */
-/* unused harmony export template */
-/* unused harmony export styles */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return zen; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return template; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return styles; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return zen; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mixins; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vhtml__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_diffhtml__ = __webpack_require__(27);
@@ -3494,62 +3507,59 @@ composable = [observe({
   };
 }];
 
-vdom = function (type) {
-  return properties(type.prototype, {
-    html: {
-      get: function () {
-        return this.shadow.innerHTML;
-      },
-      set: function (html) {
-        vdom = isString(html) ? parse(html) : html;
-        if (this.styles) {
-          vdom.push(style(this.styles));
-        }
-        return Object(__WEBPACK_IMPORTED_MODULE_1_diffhtml__["c" /* innerHTML */])(this.shadow, value);
-      }
+vdom = properties({
+  html: {
+    get: function () {
+      return this.shadow.innerHTML;
+    },
+    set: function (html) {
+      vdom = Object(__WEBPACK_IMPORTED_MODULE_2_fairmont_helpers__["isString"])(html) ? parse(html) : html;
+      vdom.push(style(this.styles));
+      return Object(__WEBPACK_IMPORTED_MODULE_1_diffhtml__["c" /* innerHTML */])(this.shadow, vdom);
     }
-  });
-};
+  }
+});
 
 autorender = function (type) {
-  return type.events.push({
+  type.on({
     change: function () {
       return this.render();
     }
   });
+  return type.prototype.ready = function () {
+    return this.render();
+  };
 };
 
 template = function (type) {
   return type.prototype.render = function () {
-    return this.html(this.template(this));
+    return this.html = this.constructor.template(this);
   };
 };
 
-styles = function (type) {
-  return properties(type.prototype, {
-    styles: {
-      get: function () {
-        var i, j, len, len1, re, ref, ref1, rule, sheet;
-        styles = "";
-        re = RegExp(`${this.tag}\\s+:host\\s+`, "g");
-        ref = document.styleSheets;
-        for (i = 0, len = ref.length; i < len; i++) {
-          sheet = ref[i];
-          if (sheet.rules != null) {
-            ref1 = sheet.rules;
-            for (j = 0, len1 = ref1.length; j < len1; j++) {
-              rule = ref1[j];
-              if (rule.cssText.match(re)) {
-                styles += rule.cssText.replace(re, "") + "\n";
-              }
+styles = properties({
+  styles: {
+    get: function () {
+      var i, j, len, len1, re, ref, ref1, rule, sheet;
+      styles = "";
+      re = RegExp(`${this.tag}\\s+:host\\s+`, "g");
+      ref = document.styleSheets;
+      for (i = 0, len = ref.length; i < len; i++) {
+        sheet = ref[i];
+        if (sheet.rules != null) {
+          ref1 = sheet.rules;
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            rule = ref1[j];
+            if (rule.cssText.match(re)) {
+              styles += rule.cssText.replace(re, "") + "\n";
             }
           }
         }
-        return styles;
       }
+      return styles;
     }
-  });
-};
+  }
+});
 
 zen = [composable, vdom, autorender, styles, template];
 
@@ -4291,7 +4301,7 @@ __WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* $ */].ready(function() {
 
 Object(__WEBPACK_IMPORTED_MODULE_0_panda_play__["b" /* gadget */])({
   tag: "x-tabs",
-  mixins: __WEBPACK_IMPORTED_MODULE_0_panda_play__["c" /* zen */],
+  mixins: [__WEBPACK_IMPORTED_MODULE_0_panda_play__["e" /* vdom */], __WEBPACK_IMPORTED_MODULE_0_panda_play__["c" /* styles */], __WEBPACK_IMPORTED_MODULE_0_panda_play__["d" /* template */]],
   properties: {
     tabs: {
       get: function() {
@@ -4326,6 +4336,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0_panda_play__["b" /* gadget */])({
   },
   template: __WEBPACK_IMPORTED_MODULE_1__template_coffee__["a" /* template */],
   ready: function() {
+    this.render();
     return this.tabs[0].select();
   }
 });
@@ -6869,14 +6880,19 @@ var events, isGadget, isHostSelector;
 
 
 
-isGadget = __WEBPACK_IMPORTED_MODULE_0_fairmont_helpers__["isObject"];
+isGadget = Object(__WEBPACK_IMPORTED_MODULE_0_fairmont_helpers__["isKind"])(Object);
 
 isHostSelector = function (s) {
   return s === "host";
 };
 
 events = __WEBPACK_IMPORTED_MODULE_1_fairmont_multimethods__["Method"].create({
-  default: function () {} // ignore bad descriptions
+  default: function () {
+    console.log({
+      "arguments": arguments
+    });
+    throw new Error("gadget: bad event descriptor");
+  }
 });
 
 // simple event handler with no selector
@@ -6926,7 +6942,7 @@ __WEBPACK_IMPORTED_MODULE_1_fairmont_multimethods__["Method"].define(events, isG
 });
 
 // an array of dictionaries
-__WEBPACK_IMPORTED_MODULE_1_fairmont_multimethods__["Method"].define(events, isGadget, Object(__WEBPACK_IMPORTED_MODULE_0_fairmont_helpers__["isArray"])(function (gadget, descriptions) {
+__WEBPACK_IMPORTED_MODULE_1_fairmont_multimethods__["Method"].define(events, isGadget, __WEBPACK_IMPORTED_MODULE_0_fairmont_helpers__["isArray"], function (gadget, descriptions) {
   var description, i, len, results;
   results = [];
   for (i = 0, len = descriptions.length; i < len; i++) {
@@ -6934,11 +6950,6 @@ __WEBPACK_IMPORTED_MODULE_1_fairmont_multimethods__["Method"].define(events, isG
     results.push(events(gadget, description));
   }
   return results;
-}));
-
-// read from events property of a gadget
-__WEBPACK_IMPORTED_MODULE_1_fairmont_multimethods__["Method"].define(events, isGadget, function (gadget) {
-  return events(gadget, gadget.constructor.events);
 });
 
 
@@ -8324,7 +8335,7 @@ Tab = (function() {
 
 Object(__WEBPACK_IMPORTED_MODULE_0_panda_play__["b" /* gadget */])({
   tag: "x-editor",
-  mixins: __WEBPACK_IMPORTED_MODULE_0_panda_play__["c" /* zen */],
+  mixins: __WEBPACK_IMPORTED_MODULE_0_panda_play__["f" /* zen */],
   template: __WEBPACK_IMPORTED_MODULE_1__template_coffee__["a" /* template */],
   on: {
     textarea: {
@@ -8383,7 +8394,7 @@ module.exports = "@import \"//cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/nor
 
 Object(__WEBPACK_IMPORTED_MODULE_0_panda_play__["b" /* gadget */])({
   tag: "x-markdown",
-  mixins: __WEBPACK_IMPORTED_MODULE_0_panda_play__["c" /* zen */],
+  mixins: __WEBPACK_IMPORTED_MODULE_0_panda_play__["f" /* zen */],
   template: __WEBPACK_IMPORTED_MODULE_1__template_coffee__["a" /* template */],
   properties: {
     output: {
