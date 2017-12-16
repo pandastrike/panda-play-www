@@ -2,11 +2,14 @@ import "./components/x-tabs/index.coffee"
 import "./components/x-editor/index.coffee"
 import "./components/x-markdown/index.coffee"
 import {$} from "./helpers"
+import {gadget} from "panda-play"
 
 $.ready ->
 
-  editor = ($ "x-editor").gadget
-  markdown = ($ "x-markdown").gadget
+  console.log "document ready"
+
+  editor = await gadget $ "x-editor"
+  markdown = await gadget $ "x-markdown"
 
   editor.pipe markdown
 
