@@ -6,8 +6,6 @@ import {gadget} from "panda-play"
 
 $.ready ->
 
-  console.log "document ready"
-
   editor = await gadget $ "x-editor"
   markdown = await gadget $ "x-markdown"
 
