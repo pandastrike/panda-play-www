@@ -1,11 +1,11 @@
 {
   "name": "panda-play-www",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "description": "",
   "author": "",
   "dependencies": {
-    "panda-play": "^1.4.0"
+    "panda-play": "^1.5.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -18,7 +18,6 @@
     "gulp-pug": "^3.3.0",
     "gulp-stylus": "^2.6.0",
     "gulp-webserver": "^0.9.1",
-    "haiku9": "^2.0.5",
     "jstransformer-markdown-it": "^2.0.0",
     "jstransformer-stylus": "^1.4.0",
     "raw-loader": "^0.5.1",
