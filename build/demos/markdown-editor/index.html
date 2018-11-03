@@ -1,0 +1,94 @@
+<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><link rel="shortcut icon" href="/images/favicon.ico"/><style>@import "//cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css";
+@import url("https://fonts.googleapis.com/css?family=Righteous");
+@import url("https://fonts.googleapis.com/css?family=Lato");
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 2rem;
+}
+body h1 {
+  font-family: "Righteous", sans-serif;
+  color: #38a;
+  letter-spacing: 1.5;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+body p {
+  font-family: "Lato";
+}
+body main {
+  display: flex;
+  flex-flow: column;
+  flex: 1 1 0;
+}
+body main > x-tabs {
+  display: flex;
+  flex-flow: column;
+  flex: 1 1 0;
+  font-size: 12pt;
+  margin-right: 2rem;
+  padding: 1rem;
+  border: 1px solid #c0c0c0;
+}
+body main > x-tabs #labels {
+  display: block;
+  padding-bottom: 0.7rem;
+}
+body main > x-tabs #labels > label {
+  display: inline-block;
+  padding: 0.5 1rem 0 0;
+  font-family: sans-serif;
+  font-size: 0.7rem;
+  line-height: 1rem;
+  letter-spacing: 1.2;
+  color: #c0c0c0;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+body main > x-tabs #labels > label.selected {
+  color: #808080;
+}
+body main > x-tabs #labels > label:last-of-type {
+  padding-right: 0;
+}
+body main > x-tabs > :not(.selected) {
+  display: none;
+}
+body main > x-tabs .content {
+  display: flex;
+  flex-flow: column;
+}
+</style><style>@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro");
+x-editor textarea {
+  font-family: "Source Code Pro", monospace;
+  font-size: 20px;
+}
+</style><style>@import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+@import url("https://fonts.googleapis.com/css?family=Libre+Baskerville");
+x-markdown {
+  all: initial;
+}
+x-markdown h1,
+x-markdown h2,
+x-markdown h3,
+x-markdown h4,
+x-markdown h5 {
+  font-family: "Josefin Sans", sans-serif;
+}
+x-markdown h1 {
+  line-height: 7rem;
+  font-size: 6.3rem;
+  border-bottom: 1px solid #c0c0c0;
+}
+x-markdown h2 {
+  line-height: 6rem;
+  font-size: 5.4rem;
+}
+x-markdown p,
+x-markdown li {
+  font-family: "Libre Baskerville", sans-serif;
+}
+x-markdown img {
+  max-width: 90%;
+}
+</style><script src="/index.js" inline="inline"></script></head></html><body><h1>Blurb9</h1><p>Tested in latest versions of Chrome and Safari. Does not work in Firefox.</p><main><x-tabs><div id="labels"><label id="markdown">Markdown</label><label id="preview">Preview</label></div><x-editor class="markdown"></x-editor><x-markdown class="preview"></x-markdown></x-tabs></main></body>

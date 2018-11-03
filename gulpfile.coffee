@@ -1,78 +1,115 @@
+fs = require "fs"
 gulp = require "gulp"
 del = require "del"
 pug = require "gulp-pug"
 stylus = require "gulp-stylus"
-coffeescript = require "coffeescript"
-coffee = require "gulp-coffee"
+minify = require "gulp-minify"
+inlinesource = require "gulp-inline-source"
 webserver = require "gulp-webserver"
 webpack = require "webpack"
 path = require "path"
 
-gulp.task "www:js", ->
+gulp.task "inline", ->
+  options =
+    compress: false
+
+  gulp.src './build/index.html'
+    .pipe inlinesource options
+    .pipe gulp.dest './dist'
+
+gulp.task "minify", ->
+  gulp.src "./build/*.js"
+    .pipe minify {
+      noSource: true
+      ext:
+        min: ".js"
+    }
+    .pipe gulp.dest "./build"
+
+gulp.task "js", ->
   new Promise (yay, nay) ->
     webpack
-      entry: "./www/demos/markdown-editor/index.coffee"
+      entry: "./src/demos/markdown-editor/index.coffee"
+      mode: "development"
+      devtool: "inline-source-map"
       output:
-        path: path.resolve "build/www/demos/markdown-editor"
+        path: path.resolve "build"
         filename: "index.js"
+        devtoolModuleFilenameTemplate: (info, args...) ->
+          {namespace, resourcePath} = info
+          "webpack://#{namespace}/#{resourcePath}"
       module:
         rules: [
           test: /\.coffee$/
           use: [ 'coffee-loader' ]
         ,
+          test: /\.js$/
+          use: [ "source-map-loader" ]
+          enforce: "pre"
+        ,
           test: /\.styl$/
-          use: [ 'raw-loader', 'stylus-loader' ]
+          exclude: /styles/
+          use: [ "raw-loader", "stylus-loader" ]
+        ,
+          test: /\.pug$/
+          use: [ "pug-loader" ]
         ]
       resolve:
         modules: [
-          # path.resolve "lib"
           path.resolve "node_modules"
         ]
         extensions: [ ".js", ".json", ".coffee" ]
+      plugins: [
+
+      ]
       (error, result) ->
         console.error result.toString colors: true
         if error? || result.hasErrors()
           nay error
         else
+          fs.writeFileSync "webpack-stats.json",
+            JSON.stringify result.toJson()
           yay()
 
-gulp.task "www:server", ->
+gulp.task "server", ->
   gulp
-  .src "build/www"
+  .src "build"
   .pipe webserver
-      livereload: true
+      # livereload: true
       port: 8000
       extensions: [ "html" ]
+      fallback: "/index.html"
 
-gulp.task "www:clean", ->
-  del "build/www"
+gulp.task "clean", ->
+  del "build"
 
-gulp.task "www:html", ->
+gulp.task "html", ->
   gulp
-  .src [ "www/**/*.pug" ]
+  .src [ "src/**/*.pug" ]
   .pipe pug {}
-  .pipe gulp.dest "build/www"
+  .pipe gulp.dest "build"
 
-gulp.task "www:css", ->
+gulp.task "css", ->
   gulp
-  .src "www/**/*.styl"
-  .pipe stylus()
-  .pipe gulp.dest "build/www"
+  .src "src/**/*.styl"
+  .pipe stylus {compress: true}
+  .pipe gulp.dest "build"
 
-gulp.task "www:images", ->
+gulp.task "images", ->
   gulp
-  .src [ "www/images/**/*" ]
-  .pipe gulp.dest "build/www/images"
+  .src [ "src/images/**/*" ]
+  .pipe gulp.dest "build/images"
 
 
-gulp.task "www:build",
-  gulp.series "www:clean",
-    gulp.parallel "www:html", "www:css", "www:js", "www:images"
+gulp.task "build",
+  gulp.series "clean",
+    (gulp.parallel "html", "css", "js", "images")
 
-gulp.task "www:watch", ->
-  gulp.watch [ "www/**/*", "lib/**/*", "./*", "../panda-play/build/lib/**/*" ],
-    gulp.task "www:build"
+gulp.task "watch", ->
+  gulp.watch [ "src/**/*"],
+    gulp.task "build"
 
 gulp.task "default",
-  gulp.series "www:build",
-    gulp.parallel "www:watch", "www:server"
+  gulp.series "build",
+    gulp.parallel "watch", "server"
+

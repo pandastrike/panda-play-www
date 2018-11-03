@@ -1,0 +1,3 @@
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+@import url("https://fonts.googleapis.com/css?family=Libre+Baskerville");
+x-markdown{all:initial;}x-markdown h1,x-markdown h2,x-markdown h3,x-markdown h4,x-markdown h5{font-family:"Josefin Sans",sans-serif}x-markdown h1{line-height:7rem;font-size:6.3rem;border-bottom:1px solid #c0c0c0}x-markdown h2{line-height:6rem;font-size:5.4rem}x-markdown p,x-markdown li{font-family:"Libre Baskerville",sans-serif}x-markdown img{max-width:90%}

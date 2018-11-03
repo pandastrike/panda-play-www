@@ -1,0 +1,30 @@
+html
+
+  head
+
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+    link(rel='shortcut icon' href='/images/favicon.ico')
+
+    style: include:stylus index.styl
+    style: include:stylus x-editor.styl
+    style: include:stylus x-markdown.styl
+
+    script(src="/index.js" inline)
+
+body
+
+  h1 Blurb9
+
+  p Tested in latest versions of Chrome and Safari. Does not work in Firefox.
+
+  main
+    x-tabs
+      div(id="labels")
+        label(id="markdown") Markdown
+        label(id="preview") Preview
+
+      x-editor(class="markdown")
+      x-markdown(class="preview")
+
