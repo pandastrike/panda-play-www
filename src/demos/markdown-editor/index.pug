@@ -22,9 +22,9 @@ body
   main
     x-tabs
       div(id="labels")
-        label(id="markdown") Markdown
-        label(id="preview") Preview
+        label(for="markdown") Markdown
+        label(for="preview") Preview
 
-      x-editor(class="markdown")
-      x-markdown(class="preview")
+      x-editor(id="markdown")
+      x-markdown(id="preview")
 

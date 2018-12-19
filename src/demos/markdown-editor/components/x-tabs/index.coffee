@@ -10,7 +10,7 @@ mixin class extends Gadget, [
       get: ->
         for tab in @root.querySelectorAll "label"
           label: tab
-          id: tab.id
+          content_id: "##{tab.getAttribute('for')}"
 
     selected:
       get: -> @root.querySelectorAll ".selected"
@@ -21,18 +21,14 @@ mixin class extends Gadget, [
       for tab in @tabs
         if el == tab.label
           tab.label.classList.add "selected"
-          @select_all @root.querySelectorAll ".#{tab.id}"
+          (@root.querySelector tab.content_id).classList.add "selected"
 
-    select_all: (ex) ->
-      for e in ex
-        e.classList.add "selected"
+    deselect: ->
+      @deselect_all @selected
 
     deselect_all: (ex) ->
       for e in ex
         e.classList.remove "selected"
-
-    deselect: ->
-      @deselect_all @selected
 
   events
     label:
