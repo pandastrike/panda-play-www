@@ -1,27 +1,46 @@
 <html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><!-- Shortcut Icon--><link rel="shortcut icon" href="/images/favicon.ico"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/><link rel="stylesheet" href="./index.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.14/webcomponents-lite.js" type="text/javascript"></script><script src="https://cdn.jsdelivr.net/npm/alameda@1.2.0/alameda.min.js" type="text/javascript"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.3/themes/prism.min.css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.3/prism.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.3/components/prism-coffeescript.min.js"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/prism/1.8.3/plugins/toolbar/prism-toolbar.css"/><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.8.3/plugins/toolbar/prism-toolbar.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.8.3/plugins/show-language/prism-show-language.min.js"></script><script>Prism.languages.coffee = Prism.languages.coffeescript
 </script></head></html><body><header><a href="//pandastrike.com"><img src="/images/logo.png"/></a></header><main><section><h1>Play</h1>
-<p>Play is a lightweight library for building Web Components.</p>
-<p>To create a component, you call <code>mixin</code> and pass it the Gadget class and an
-array of mixins you wish to include:</p>
+<p>Play is a lightweight library for building native Web Components. You can use it
+to build modern user interfaces in your web apps.</p>
+<h2>Gadgets</h2>
+<p>At the core of Play are <strong>Gadgets</strong>.</p>
+<p>Gadgets are fully encapsulated Web Components. You create a Gadget by composing
+the base <code>Gadget</code> class with any number of <strong>mixins</strong> that add behavior and
+features. This compositional approach allows a great deal of flexibility.</p>
+<p>Play comes with several mixins baked in but you can also create your own.</p>
+<p>Here's an example in CoffeeScript (<em><a href="https://www.pandastrike.com/posts/20150203-youre-welcome-javascript/">why CoffeeScript?</a></em>) of composing a new Gadget that will render
+the obligatory &quot;Hello, World!&quot;:</p>
 <pre><code class="language-coffee">import {Gadget, bebop, shadow, template, events} from &quot;panda-play&quot;
 
-mixin class extends Gadget, [
+class extends Gadget
 
-  tag &quot;x-greeting&quot;
+  mixin @, [
 
-  # bebop preset gives us VDOM + automatic rendering
-  # shadow give us Shadow DOM support
-  bebop, shadow
+    tag &quot;x-greeting&quot;
 
-  template ({value}) -&gt; &quot;&lt;h1&gt;#{value}, World!&lt;/h1&gt;&quot;
+    # bebop preset gives us VDOM + automatic rendering
+    # shadow give us Shadow DOM support
+    bebop, shadow
 
-  events
-    h1:
-      click: ({target}) -&gt; @value = &quot;Goodbye&quot;
+    template ({value}) -&gt; &quot;&lt;h1&gt;#{value}, World!&lt;/h1&gt;&quot;
 
-]
+    events
+      h1:
+        click: ({target}) -&gt; @value = &quot;Goodbye&quot;
+
+  ]
 </code></pre>
-<h2>Features</h2>
+<h2>Mixins</h2>
+<p>Mixins are functions that take a <code>type</code> (a class that extends the base <code>Gadget</code>
+class), add properties and methods to it, and return the type, allowing us to
+compose multiple mixins together to arrive at the feature set we desire for our
+new Gadget.</p>
+<p>This mixin-based composition lets us avoid the <a href="https://medium.com/@_ericelliott/why-composition-is-immune-to-fragile-base-class-problem-8dfc6a5272aa">fragile base class
+problem</a>.</p>
+<p>Play ships with several built in mixins as well as presets (pre
+mixed-combinations that you can include). You can write your own mixins and
+fully customize your Gadget making toolbelt, too.</p>
+<h2>Full Feature List</h2>
 <ul>
 <li>Fully encapsulated native Web Components</li>
 <li>Virtual DOM, with diff-based updates</li>
@@ -32,11 +51,10 @@ mixin class extends Gadget, [
 <li>Component-targetable CSS from client document</li>
 <li>Pipe operator to wire components together</li>
 <li>Delegation pattern—Gadgets are handles to DOM elements</li>
-<li>Mixin-based composition avoid <a href="https://medium.com/@_ericelliott/why-composition-is-immune-to-fragile-base-class-problem-8dfc6a5272aa">fragile base class problem</a></li>
 </ul>
 <h2>Demo</h2>
 <p><a href="https://play.pandastrike.com/demos/markdown-editor">Try it out!</a></p>
-<h2>Install</h2>
+<h2>Installation</h2>
 <p>Bundle using your favorite bundler:</p>
 <pre><code>npm i -S panda-play
 </code></pre>

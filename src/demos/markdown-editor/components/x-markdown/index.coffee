@@ -11,8 +11,14 @@ markdown = property
         quotes: '“”‘’'
       -> md.render @value if @value?
 
-mixin class extends Gadget, [
-  tag "x-markdown"
-  bebop, markdown
-  render template
-]
+class extends Gadget
+
+  mixin @, [
+
+    tag "x-markdown"
+
+    bebop, markdown
+
+    render template
+
+  ]
