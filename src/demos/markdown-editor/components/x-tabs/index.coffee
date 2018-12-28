@@ -15,7 +15,7 @@ class extends Gadget
         get: ->
           for tab in @root.querySelectorAll "label"
             label: tab
-            content_id: "##{tab.getAttribute('for')}"
+            contentId: "##{tab.getAttribute('for')}"
 
     events
       label:
@@ -30,12 +30,12 @@ class extends Gadget
     for tab in @tabs
       if el == tab.label
         tab.label.classList.add "selected"
-        (@root.querySelector tab.content_id).classList.add "selected"
+        (@root.querySelector tab.contentId).classList.add "selected"
 
   deselect: ->
-    @deselect_all @selected
+    @deselectAll @selected
 
-  deselect_all: (ex) ->
+  deselectAll: (ex) ->
     for e in ex
       e.classList.remove "selected"
 
